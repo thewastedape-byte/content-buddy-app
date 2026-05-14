@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { isLoggedIn } from '@/lib/auth'
+import { isLoggedIn, getAuth } from '@/lib/auth'
 
 const plans = [
   {
@@ -60,6 +61,26 @@ const plans = [
 
 export default function PricingPage() {
   const router = useRouter()
+  const [loading, setLoading] = useState<string | null>(null)
+
+  const handleCheckout = async (tier: string) => {
+    setLoading(tier)
+    try {
+      const auth = getAuth()
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier, email: auth?.email }),
+      })
+      const data = await res.json()
+      if (data.url) window.location.href = data.url
+      else alert('Checkout error. Please try again.')
+    } catch {
+      alert('Connection error. Please try again.')
+    } finally {
+      setLoading(null)
+    }
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0f' }}>
@@ -165,14 +186,25 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <Link href={plan.ctaHref} style={{ textDecoration: 'none', display: 'block' }}>
+              {plan.name === 'Free' ? (
+                <Link href={plan.ctaHref} style={{ textDecoration: 'none', display: 'block' }}>
+                  <button className="btn-outline" style={{ width: '100%', justifyContent: 'center', fontSize: '15px', padding: '13px' }}>
+                    {plan.cta}
+                  </button>
+                </Link>
+              ) : (
                 <button
                   className={plan.highlight ? 'btn-primary' : 'btn-outline'}
-                  style={{ width: '100%', justifyContent: 'center', fontSize: '15px', padding: '13px' }}
+                  style={{ width: '100%', justifyContent: 'center', fontSize: '15px', padding: '13px', opacity: loading === plan.name.toLowerCase() ? 0.7 : 1 }}
+                  disabled={!!loading}
+                  onClick={() => {
+                    if (!isLoggedIn()) { router.push('/signup'); return }
+                    handleCheckout(plan.name.toLowerCase())
+                  }}
                 >
-                  {plan.cta}
+                  {loading === plan.name.toLowerCase() ? 'Loading...' : plan.cta}
                 </button>
-              </Link>
+              )}
             </div>
           ))}
         </div>
