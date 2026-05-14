@@ -55,10 +55,11 @@ export default function PricingPage() {
           Unlimited AI content generation. One topic → full YouTube script, blog post, captions, threads, and more — in 30 seconds.
         </p>
 
-        <div style={{ marginBottom: '28px' }}>
-          <span style={{ fontFamily: 'Georgia, serif', fontSize: '52px', fontWeight: 'bold', color: '#f0f0f0' }}>$17</span>
-          <span style={{ color: 'rgba(240,240,240,0.45)', fontSize: '16px', marginLeft: '6px' }}>/month</span>
+        <div style={{ marginBottom: '8px' }}>
+          <span style={{ fontFamily: 'Georgia, serif', fontSize: '52px', fontWeight: 'bold', color: '#f0f0f0' }}>$5</span>
+          <span style={{ color: 'rgba(240,240,240,0.45)', fontSize: '16px', marginLeft: '6px' }}>every 6 months</span>
         </div>
+        <p style={{ color: 'rgba(124,58,237,0.9)', fontSize: '13px', marginBottom: '20px', fontWeight: 'bold' }}>Less than $1/month — billed twice a year</p>
 
         <ul style={{ listStyle: 'none', marginBottom: '32px', textAlign: 'left' }}>
           {[
@@ -88,7 +89,7 @@ export default function PricingPage() {
         </button>
 
         <p style={{ fontSize: '12px', color: 'rgba(240,240,240,0.3)', marginTop: '16px' }}>
-          Cancel anytime · Secure payment via Stripe
+          Billed every 6 months · Cancel anytime · Secure payment via Stripe
         </p>
       </div>
 
