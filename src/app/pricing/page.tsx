@@ -56,10 +56,10 @@ export default function PricingPage() {
         </p>
 
         <div style={{ marginBottom: '8px' }}>
-          <span style={{ fontFamily: 'Georgia, serif', fontSize: '52px', fontWeight: 'bold', color: '#f0f0f0' }}>$5</span>
+          <span style={{ fontFamily: 'Georgia, serif', fontSize: '52px', fontWeight: 'bold', color: '#f0f0f0' }}>$9.99</span>
           <span style={{ color: 'rgba(240,240,240,0.45)', fontSize: '16px', marginLeft: '6px' }}>every 6 months</span>
         </div>
-        <p style={{ color: 'rgba(124,58,237,0.9)', fontSize: '13px', marginBottom: '20px', fontWeight: 'bold' }}>Less than $1/month — billed twice a year</p>
+        <p style={{ color: 'rgba(124,58,237,0.9)', fontSize: '13px', marginBottom: '20px', fontWeight: 'bold' }}>Less than $1.67/month — 20 generations/week — resets every Sunday</p>
 
         <ul style={{ listStyle: 'none', marginBottom: '32px', textAlign: 'left' }}>
           {[
