@@ -10,7 +10,7 @@ export default function PricingPage() {
   const [loading, setLoading] = useState(false)
 
   const handleCheckout = async () => {
-    if (!isLoggedIn()) { router.push('/signup'); return }
+    if (!isLoggedIn()) { router.push('/signup?tier=creator'); return }
     setLoading(true)
     try {
       const auth = getAuth()
