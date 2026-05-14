@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
+export const dynamic = 'force-dynamic'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-12-18.acacia' })
+import { NextRequest, NextResponse } from 'next/server'
 
 const PRICES: Record<string, string> = {
   creator: process.env.STRIPE_PRICE_CREATOR || '',
@@ -10,6 +9,12 @@ const PRICES: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
+    const stripeKey = process.env.STRIPE_SECRET_KEY
+    if (!stripeKey) return NextResponse.json({ error: 'Payments not configured' }, { status: 503 })
+
+    const Stripe = (await import('stripe')).default
+    const stripe = new Stripe(stripeKey, { apiVersion: '2024-12-18.acacia' as any })
+
     const { tier, email } = await req.json()
     const priceId = PRICES[tier]
     if (!priceId) return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
@@ -21,7 +26,6 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
-      subscription_data: { metadata: { tier } },
     })
 
     return NextResponse.json({ url: session.url })
