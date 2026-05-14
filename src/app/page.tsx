@@ -48,6 +48,12 @@ export default function HomePage() {
       return
     }
     setUserEmail(auth.email)
+    // Redirect to pricing if not paid
+    const sub = getSubscription()
+    if (sub === 'free') {
+      router.push('/pricing')
+      return
+    }
     setUsageCount(getUsageCount())
     setSubscription(getSubscription())
   }, [router])
@@ -65,11 +71,6 @@ export default function HomePage() {
     }
     if (selectedTypes.length === 0) {
       setError('Please select at least one content type.')
-      return
-    }
-
-    if (hasReachedFreeLimit()) {
-      setShowUpgradeModal(true)
       return
     }
 
@@ -129,18 +130,18 @@ export default function HomePage() {
         top: 0,
         zIndex: 50,
       }}>
-        <div>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 'bold' }}>
-            <span className="gradient-text">ContentBuddy</span>
-          </h1>
-          <p style={{ fontSize: '11px', color: 'rgba(240,240,240,0.4)', marginTop: '2px' }}>by WastedApe</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="WastedApe" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid rgba(124,58,237,0.5)' }} />
+          <div>
+            <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 'bold' }}>
+              <span className="gradient-text">ContentBuddy</span>
+            </h1>
+            <p style={{ fontSize: '11px', color: 'rgba(240,240,240,0.4)', marginTop: '2px' }}>by WastedApe</p>
+          </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {!isPaid && (
-            <span style={{ fontSize: '13px', color: 'rgba(240,240,240,0.5)' }}>
-              {freeRemaining} free {freeRemaining === 1 ? 'generation' : 'generations'} left
-            </span>
-          )}
+
           {isPaid && (
             <span style={{
               fontSize: '12px',
